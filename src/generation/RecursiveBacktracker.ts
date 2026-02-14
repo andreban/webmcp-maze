@@ -32,7 +32,8 @@ export class RecursiveBacktracker implements MazeGenerator {
         continue;
       }
 
-      const [dir, next] = neighbors[Math.floor(Math.random() * neighbors.length)];
+      const [dir, next] =
+        neighbors[Math.floor(Math.random() * neighbors.length)];
       board.removeWall(current, dir);
       visited[next.row][next.col] = true;
       stack.push(next);

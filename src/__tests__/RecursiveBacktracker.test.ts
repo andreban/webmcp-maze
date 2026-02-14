@@ -88,7 +88,9 @@ describe("RecursiveBacktracker", () => {
       for (let r = 0; r < 5; r++) {
         for (let c = 0; c < 5; c++) {
           const cell = board.getCell({ row: r, col: c })!;
-          snap += Object.values(cell.walls).map((w) => (w ? "1" : "0")).join("");
+          snap += Object.values(cell.walls)
+            .map((w) => (w ? "1" : "0"))
+            .join("");
         }
       }
       snapshots.push(snap);

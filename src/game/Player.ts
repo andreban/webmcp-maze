@@ -1,4 +1,8 @@
-import { type Position, type Direction, DIRECTION_OFFSETS } from "../types/index.ts";
+import {
+  type Position,
+  type Direction,
+  DIRECTION_OFFSETS,
+} from "../types/index.ts";
 import { type MazeBoard } from "./MazeBoard.ts";
 
 /**

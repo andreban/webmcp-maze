@@ -50,7 +50,10 @@ export class Game {
    * @param rows - Maze row count.
    * @param cols - Maze column count.
    */
-  newGame(rows: number = MAZE_DEFAULT_ROWS, cols: number = MAZE_DEFAULT_COLS): void {
+  newGame(
+    rows: number = MAZE_DEFAULT_ROWS,
+    cols: number = MAZE_DEFAULT_COLS,
+  ): void {
     this.board = new MazeBoard(rows, cols);
     const generator = new RecursiveBacktracker();
     generator.generate(this.board);

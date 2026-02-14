@@ -22,10 +22,13 @@ export class McpToolRegistry {
    */
   constructor(game: Game) {
     this.game = game;
-    this.supported = typeof navigator !== "undefined" && !!navigator.modelContext;
+    this.supported =
+      typeof navigator !== "undefined" && !!navigator.modelContext;
 
     if (!this.supported) {
-      console.warn("WebMCP (navigator.modelContext) is not available in this browser.");
+      console.warn(
+        "WebMCP (navigator.modelContext) is not available in this browser.",
+      );
     }
   }
 

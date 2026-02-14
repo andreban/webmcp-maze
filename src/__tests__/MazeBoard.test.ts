@@ -41,10 +41,22 @@ describe("MazeBoard", () => {
 
   it("returns correct neighbor positions", () => {
     const board = new MazeBoard(3, 3);
-    expect(board.neighbor({ row: 1, col: 1 }, Direction.North)).toEqual({ row: 0, col: 1 });
-    expect(board.neighbor({ row: 1, col: 1 }, Direction.South)).toEqual({ row: 2, col: 1 });
-    expect(board.neighbor({ row: 1, col: 1 }, Direction.East)).toEqual({ row: 1, col: 2 });
-    expect(board.neighbor({ row: 1, col: 1 }, Direction.West)).toEqual({ row: 1, col: 0 });
+    expect(board.neighbor({ row: 1, col: 1 }, Direction.North)).toEqual({
+      row: 0,
+      col: 1,
+    });
+    expect(board.neighbor({ row: 1, col: 1 }, Direction.South)).toEqual({
+      row: 2,
+      col: 1,
+    });
+    expect(board.neighbor({ row: 1, col: 1 }, Direction.East)).toEqual({
+      row: 1,
+      col: 2,
+    });
+    expect(board.neighbor({ row: 1, col: 1 }, Direction.West)).toEqual({
+      row: 1,
+      col: 0,
+    });
   });
 
   it("returns undefined for out-of-bounds neighbors", () => {

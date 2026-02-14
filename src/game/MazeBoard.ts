@@ -49,7 +49,9 @@ export class MazeBoard {
    * @param pos - The row/col coordinate to test.
    */
   inBounds(pos: Position): boolean {
-    return pos.row >= 0 && pos.row < this.rows && pos.col >= 0 && pos.col < this.cols;
+    return (
+      pos.row >= 0 && pos.row < this.rows && pos.col >= 0 && pos.col < this.cols
+    );
   }
 
   /**
@@ -60,7 +62,10 @@ export class MazeBoard {
    */
   neighbor(pos: Position, dir: Direction): Position | undefined {
     const offset = DIRECTION_OFFSETS[dir];
-    const next: Position = { row: pos.row + offset.row, col: pos.col + offset.col };
+    const next: Position = {
+      row: pos.row + offset.row,
+      col: pos.col + offset.col,
+    };
     return this.inBounds(next) ? next : undefined;
   }
 

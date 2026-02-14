@@ -107,9 +107,9 @@ Accessed via `navigator.modelContext`.
 
 ```ts
 interface ModelContextTool {
-  name: string;                                    // unique identifier
-  description: string;                             // natural-language explanation
-  inputSchema?: object;                            // JSON Schema for input
+  name: string; // unique identifier
+  description: string; // natural-language explanation
+  inputSchema?: object; // JSON Schema for input
   execute: (input: object, client: ModelContextClient) => Promise<any>;
   annotations?: { readOnlyHint?: boolean };
 }
@@ -149,7 +149,7 @@ the tool needs to trigger a user-visible side effect.
 ## Git
 
 - Write detailed commit messages: short summary line, blank line, then a body
-  explaining *what* changed and *why*
+  explaining _what_ changed and _why_
 
 ## Commands
 
