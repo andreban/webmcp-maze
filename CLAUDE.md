@@ -20,13 +20,29 @@ interact with the game world (move player, inspect surroundings, etc.).
 - **Strategy pattern** for maze generation — `RecursiveBacktracker` is the default,
   but any generator implementing the `MazeGenerator` interface can be swapped in
 
+### Game States
+
+The game uses a state machine with the following states:
+
+- **Intro** — title screen, waits for agent to start the game
+- **Gameplay** — maze is visible, player moves via agent tools
+- **GameOver** — player escaped (win) or gave up; shows results
+
+Each state is a class implementing a `GameState` interface (`enter()`, `exit()`,
+`update()`). `Game` holds the current state and delegates to it.
+
 ### Directory Structure
 
 ```
 src/
   main.ts              # entry point — bootstraps the app
   game/
-    Game.ts            # top-level game orchestrator
+    Game.ts            # top-level game orchestrator, owns state machine
+    GameState.ts       # GameState interface
+    states/
+      IntroState.ts
+      GameplayState.ts
+      GameOverState.ts
     Player.ts          # player state and movement logic
     MazeBoard.ts       # maze data structure (grid, cells, walls)
   generation/
@@ -99,6 +115,22 @@ the tool needs to trigger a user-visible side effect.
   `registerTool()` / `unregisterTool()` as game state changes
 - Tools receive a reference to the `Game` instance so they can query/mutate state
 - Keep tool `execute` callbacks thin — delegate to game logic classes
+
+## TODO
+
+- [ ] Install dependencies (PixiJS, Howler.js, Prettier)
+- [ ] Set up project directory structure
+- [ ] Implement maze data structure and recursive backtracker generator
+- [ ] Implement PixiJS renderer (maze + player views)
+- [ ] Implement player state and movement logic
+- [ ] Set up McpToolRegistry and initial tools (move, look)
+- [ ] Add audio via AudioManager
+- [ ] Win condition and game flow
+
+## Git
+
+- Write detailed commit messages: short summary line, blank line, then a body
+  explaining *what* changed and *why*
 
 ## Commands
 
