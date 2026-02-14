@@ -23,13 +23,13 @@ export function createStartGameTool(game: Game): ModelContextTool {
       game.newGame();
       game.setState(new GameplayState(game));
 
-      return {
+      return JSON.stringify({
         message:
           "A new maze has been generated! Use 'look' to see your surroundings, then 'move' to navigate.",
         mazeSize: { rows: game.board.rows, cols: game.board.cols },
         startPosition: { row: 0, col: 0 },
         exitPosition: { row: game.board.exit.row, col: game.board.exit.col },
-      };
+      });
     },
   };
 }

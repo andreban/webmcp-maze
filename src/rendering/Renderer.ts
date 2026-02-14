@@ -31,7 +31,7 @@ export class Renderer {
    */
   async init(container: HTMLElement): Promise<void> {
     await this.app.init({
-      background: 0xf1f5f9,
+      background: 0x050a14,
       resizeTo: container,
       antialias: true,
     });

@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap");
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Share Tech Mono", "Courier New", monospace;
   line-height: 1.5;
   font-weight: 400;
-  color: #213547;
-  background-color: #f1f5f9;
+  color: #b0e0ff;
+  background-color: #050a14;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +47,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(241, 245, 249, 0.95);
+  background: rgba(5, 10, 20, 0.95);
   z-index: 10;
   text-align: center;
   padding: 2rem;
@@ -53,28 +55,37 @@ body {
 
 #intro-overlay h1,
 #gameover-overlay h1 {
+  font-family: "Orbitron", sans-serif;
   font-size: 3rem;
-  font-weight: 700;
-  color: #0f172a;
+  font-weight: 900;
+  color: #00e5ff;
   margin-bottom: 1rem;
+  text-shadow:
+    0 0 10px rgba(0, 229, 255, 0.8),
+    0 0 40px rgba(0, 229, 255, 0.4),
+    0 0 80px rgba(0, 229, 255, 0.2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 #intro-overlay p,
 #gameover-overlay p {
-  font-size: 1.2rem;
-  color: #475569;
+  font-size: 1.1rem;
+  color: #7ec8e3;
   max-width: 480px;
   margin-bottom: 0.75rem;
 }
 
 .hint {
   font-size: 0.95rem !important;
-  color: #94a3b8 !important;
+  color: #3a6a80 !important;
 }
 
 .hint code {
-  background: #e2e8f0;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.2);
   padding: 0.15em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
+  color: #00e5ff;
 }

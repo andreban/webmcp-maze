@@ -24,14 +24,14 @@ export function createLookTool(game: Game): ModelContextTool {
       const openDirections = game.board.openDirections(pos);
       const atExit = game.board.isExit(pos);
 
-      return {
+      return JSON.stringify({
         position: { row: pos.row, col: pos.col },
         openDirections,
         atExit,
         exitPosition: { row: game.board.exit.row, col: game.board.exit.col },
         mazeSize: { rows: game.board.rows, cols: game.board.cols },
         moveCount: game.player.moveCount,
-      };
+      });
     },
   };
 }

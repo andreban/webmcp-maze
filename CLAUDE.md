@@ -145,6 +145,18 @@ the tool needs to trigger a user-visible side effect.
 - [ ] Add more MCP tools (e.g., give_up, get_map, hint)
 - [x] Animate player movement (lerp between cells)
 - [ ] Add move history / breadcrumb trail visualization
+- [ ] Add fog of war (only render visited/visible cells)
+- [ ] Add collectibles (keys, coins, power-ups) scattered through the maze
+- [ ] Add locked doors that require finding a key to pass through
+- [ ] Add difficulty settings (maze size, mechanics complexity)
+- [ ] Add multiple levels (generate a new, harder maze after escaping)
+- [ ] Add particle effects (dust on move, glow on exit, sparkles on collectibles)
+- [ ] Tron-inspired visual overhaul: dark background + neon cyan/magenta color scheme
+- [ ] Add glow filters to walls, player, and exit
+- [ ] Thin luminous line walls with outer glow
+- [ ] Subtle grid floor pattern in maze cells
+- [ ] Player movement trail (fading breadcrumbs)
+- [ ] Dark neon overlay screens with digital font (Orbitron)
 
 ## Git
 
