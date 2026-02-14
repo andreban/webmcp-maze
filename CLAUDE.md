@@ -151,12 +151,15 @@ the tool needs to trigger a user-visible side effect.
 - [ ] Add difficulty settings (maze size, mechanics complexity)
 - [ ] Add multiple levels (generate a new, harder maze after escaping)
 - [ ] Add particle effects (dust on move, glow on exit, sparkles on collectibles)
-- [ ] Tron-inspired visual overhaul: dark background + neon cyan/magenta color scheme
-- [ ] Add glow filters to walls, player, and exit
-- [ ] Thin luminous line walls with outer glow
-- [ ] Subtle grid floor pattern in maze cells
-- [ ] Player movement trail (fading breadcrumbs)
-- [ ] Dark neon overlay screens with digital font (Orbitron)
+- [x] Tron-inspired visual overhaul: dark background + neon cyan/magenta color scheme
+- [x] Add glow filters to walls, player, and exit
+- [x] Thin luminous line walls with outer glow
+- [x] Subtle grid floor pattern in maze cells
+- [x] Player movement trail (fading breadcrumbs)
+- [x] Dark neon overlay screens with digital font (Orbitron)
+
+**Important:** Always keep this TODO list up to date — mark items as done when
+completed, and add new items when new work is planned.
 
 ## Git
 

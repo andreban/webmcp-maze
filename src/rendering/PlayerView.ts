@@ -141,8 +141,8 @@ export class PlayerView {
     this.elapsed += dt * 1000;
     const t = Math.min(this.elapsed / this.duration, 1);
 
-    // Ease-out quad: decelerates toward the target
-    const eased = 1 - (1 - t) * (1 - t);
+    // Ease-in-out cubic: smooth acceleration and deceleration
+    const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     this.container.x = this.fromX + (this.toX - this.fromX) * eased;
     this.container.y = this.fromY + (this.toY - this.fromY) * eased;
