@@ -143,7 +143,7 @@ the tool needs to trigger a user-visible side effect.
 - [ ] Replace placeholder audio files with real sound effects
 - [ ] End-to-end manual testing in browser (with WebMCP-capable browser)
 - [ ] Add more MCP tools (e.g., give_up, get_map, hint)
-- [ ] Animate player movement (lerp between cells)
+- [x] Animate player movement (lerp between cells)
 - [ ] Add move history / breadcrumb trail visualization
 
 ## Git

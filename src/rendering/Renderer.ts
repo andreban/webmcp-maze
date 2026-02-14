@@ -40,6 +40,11 @@ export class Renderer {
     this.app.stage.addChild(this.mazeView.container);
     this.app.stage.addChild(this.playerView.container);
 
+    // Drive PlayerView animation each frame
+    this.app.ticker.add((ticker) => {
+      this.playerView.tick(ticker.deltaMS / 1000);
+    });
+
     this.showGameCanvas(false);
   }
 
@@ -58,6 +63,15 @@ export class Renderer {
    */
   updatePlayerPosition(pos: Position): void {
     this.playerView.updatePosition(pos);
+  }
+
+  /**
+   * Smoothly animates the player to a new grid position.
+   * Resolves once the animation is complete.
+   * @param pos - The target row/col in the maze.
+   */
+  animatePlayerMove(pos: Position): Promise<void> {
+    return this.playerView.animateTo(pos);
   }
 
   /**

@@ -42,8 +42,8 @@ export function createMoveTool(game: Game): ModelContextTool {
       const moved = game.player.move(dir as Direction, game.board);
 
       if (moved) {
-        game.renderer.updatePlayerPosition(game.player.position);
         game.audio.play(SoundId.Move);
+        await game.renderer.animatePlayerMove(game.player.position);
 
         const atExit = game.board.isExit(game.player.position);
         return {

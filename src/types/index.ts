@@ -39,6 +39,9 @@ export const MAZE_DEFAULT_ROWS = 10;
 /** Default maze column count. */
 export const MAZE_DEFAULT_COLS = 10;
 
+/** Duration of the player move animation in milliseconds. */
+export const MOVE_ANIM_DURATION = 150;
+
 /** Row/col deltas for each cardinal direction. */
 export const DIRECTION_OFFSETS: Record<Direction, Position> = {
   [Direction.North]: { row: -1, col: 0 },
