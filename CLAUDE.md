@@ -68,6 +68,16 @@ src/
 - Prefer `interface` over `type` for object shapes
 - No default exports — use named exports everywhere
 - Keep rendering logic separate from game logic
+- Add JSDoc comments to all exported classes, methods, interfaces, and non-trivial constants
+
+## Testing
+
+- **Runner**: Bun's built-in test runner (`bun test`)
+- **Location**: `src/__tests__/` — test files named `<ClassName>.test.ts`
+- Write tests for all game-logic classes (data structures, generators, player, etc.)
+- Rendering and audio classes are harder to unit-test; focus tests on logic layers
+- Run tests before committing: `bun test`
+- When adding a new game-logic class, add a corresponding test file
 
 ## WebMCP Integration
 
@@ -118,14 +128,23 @@ the tool needs to trigger a user-visible side effect.
 
 ## TODO
 
-- [ ] Install dependencies (PixiJS, Howler.js, Prettier)
-- [ ] Set up project directory structure
-- [ ] Implement maze data structure and recursive backtracker generator
-- [ ] Implement PixiJS renderer (maze + player views)
-- [ ] Implement player state and movement logic
-- [ ] Set up McpToolRegistry and initial tools (move, look)
-- [ ] Add audio via AudioManager
-- [ ] Win condition and game flow
+- [x] Install dependencies (PixiJS, Howler.js, Prettier)
+- [x] Set up project directory structure
+- [x] Implement maze data structure and recursive backtracker generator
+- [x] Implement player state and movement logic
+- [x] Implement Game orchestrator and GameState interface with state machine
+- [x] Add tests for MazeBoard, RecursiveBacktracker, and Player
+- [x] Implement PixiJS renderer (Renderer, MazeView, PlayerView)
+- [x] Set up McpToolRegistry and WebMCP type declarations
+- [x] Implement MCP tools (move, look, start_game)
+- [x] Add audio via AudioManager (placeholder MP3s in public/audio/)
+- [x] Wire up main.ts entry point and game loop
+- [x] Add CSS styling for overlay screens
+- [ ] Replace placeholder audio files with real sound effects
+- [ ] End-to-end manual testing in browser (with WebMCP-capable browser)
+- [ ] Add more MCP tools (e.g., give_up, get_map, hint)
+- [ ] Animate player movement (lerp between cells)
+- [ ] Add move history / breadcrumb trail visualization
 
 ## Git
 
@@ -136,4 +155,5 @@ the tool needs to trigger a user-visible side effect.
 
 - `bun run dev` — start dev server
 - `bun run build` — typecheck + production build
+- `bun test` — run all tests
 - `bunx prettier --write .` — format all files
