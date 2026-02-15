@@ -23,6 +23,9 @@ export class MazeBoard {
   /** Internal 2D grid of cells. */
   private grid: Cell[][];
 
+  /** Set of revealed cell keys (`"row,col"`) for fog of war. */
+  private revealed = new Set<string>();
+
   /**
    * Creates a new maze board with all walls intact.
    * @param rows - Number of rows.
@@ -113,6 +116,45 @@ export class MazeBoard {
    */
   isExit(pos: Position): boolean {
     return pos.row === this.exit.row && pos.col === this.exit.col;
+  }
+
+  /**
+   * Returns the number of revealed cells.
+   */
+  get revealedCount(): number {
+    return this.revealed.size;
+  }
+
+  /**
+   * Checks whether a cell has been revealed (visible through fog of war).
+   * @param pos - The position to check.
+   */
+  isRevealed(pos: Position): boolean {
+    return this.revealed.has(`${pos.row},${pos.col}`);
+  }
+
+  /**
+   * Marks a single cell as revealed.
+   * @param pos - The position to reveal.
+   */
+  revealCell(pos: Position): void {
+    if (this.inBounds(pos)) {
+      this.revealed.add(`${pos.row},${pos.col}`);
+    }
+  }
+
+  /**
+   * Reveals a cell and all neighbors reachable through open walls (one step deep).
+   * @param pos - The position to reveal from.
+   */
+  revealFrom(pos: Position): void {
+    this.revealCell(pos);
+    for (const dir of this.openDirections(pos)) {
+      const n = this.neighbor(pos, dir);
+      if (n) {
+        this.revealCell(n);
+      }
+    }
   }
 
   /**

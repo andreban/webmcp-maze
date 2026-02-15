@@ -145,7 +145,7 @@ the tool needs to trigger a user-visible side effect.
 - [ ] Add more MCP tools (e.g., give_up, get_map, hint)
 - [x] Animate player movement (lerp between cells)
 - [ ] Add move history / breadcrumb trail visualization
-- [ ] Add fog of war (only render visited/visible cells)
+- [x] Add fog of war (only render visited/visible cells)
 - [ ] Add collectibles (keys, coins, power-ups) scattered through the maze
 - [ ] Add locked doors that require finding a key to pass through
 - [ ] Add difficulty settings (maze size, mechanics complexity)
@@ -163,6 +163,7 @@ completed, and add new items when new work is planned.
 
 ## Git
 
+- **Always run `bunx prettier --write .` after writing code and before committing.**
 - Write detailed commit messages: short summary line, blank line, then a body
   explaining _what_ changed and _why_
 

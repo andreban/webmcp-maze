@@ -114,8 +114,18 @@ body {
   text-shadow: none;
 }
 
-#gameplay-hud #move-count {
+#gameplay-hud #move-count,
+#gameplay-hud #explored-count {
   font-weight: 700;
   font-size: 1.4rem;
   margin-left: 0.3rem;
+}
+
+#gameplay-hud .hud-separator {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin: 0 0.8rem;
+  vertical-align: middle;
+  background: rgba(0, 229, 255, 0.25);
 }

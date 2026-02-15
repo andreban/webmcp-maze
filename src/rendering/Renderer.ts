@@ -1,5 +1,6 @@
 import { Application } from "pixi.js";
 import { MazeView } from "./MazeView.ts";
+import { FogOverlay } from "./FogOverlay.ts";
 import { PlayerView } from "./PlayerView.ts";
 import { type MazeBoard } from "../game/MazeBoard.ts";
 import { type Position, CELL_SIZE } from "../types/index.ts";
@@ -15,12 +16,16 @@ export class Renderer {
   /** View that draws the maze walls and exit. */
   private mazeView: MazeView;
 
+  /** Overlay that draws fog of war over unrevealed cells. */
+  private fogOverlay: FogOverlay;
+
   /** View that draws the player circle. */
   private playerView: PlayerView;
 
   constructor() {
     this.app = new Application();
     this.mazeView = new MazeView();
+    this.fogOverlay = new FogOverlay();
     this.playerView = new PlayerView();
   }
 
@@ -38,6 +43,7 @@ export class Renderer {
     container.appendChild(this.app.canvas);
 
     this.app.stage.addChild(this.mazeView.container);
+    this.app.stage.addChild(this.fogOverlay.container);
     this.app.stage.addChild(this.playerView.container);
 
     // Drive PlayerView animation each frame
@@ -55,6 +61,14 @@ export class Renderer {
   buildMazeView(board: MazeBoard): void {
     this.mazeView.build(board);
     this.centerCamera(board);
+  }
+
+  /**
+   * Redraws the fog of war overlay based on revealed cells.
+   * @param board - The maze board with visibility data.
+   */
+  updateFog(board: MazeBoard): void {
+    this.fogOverlay.update(board);
   }
 
   /**

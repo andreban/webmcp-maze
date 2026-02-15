@@ -24,11 +24,15 @@ export function createLookTool(game: Game): ModelContextTool {
       const openDirections = game.board.openDirections(pos);
       const atExit = game.board.isExit(pos);
 
+      const exitRevealed = game.board.isRevealed(game.board.exit);
+
       return JSON.stringify({
         position: { row: pos.row, col: pos.col },
         openDirections,
         atExit,
-        exitPosition: { row: game.board.exit.row, col: game.board.exit.col },
+        exitPosition: exitRevealed
+          ? { row: game.board.exit.row, col: game.board.exit.col }
+          : "unknown — not yet visible through fog of war",
         mazeSize: { rows: game.board.rows, cols: game.board.cols },
         moveCount: game.player.moveCount,
       });

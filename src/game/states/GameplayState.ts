@@ -17,6 +17,9 @@ export class GameplayState implements GameState {
   /** Span displaying the current move count. */
   private moveCountEl: HTMLSpanElement | null = null;
 
+  /** Span displaying the explored cell count. */
+  private exploredCountEl: HTMLSpanElement | null = null;
+
   /**
    * @param game - The game orchestrator instance.
    */
@@ -33,9 +36,12 @@ export class GameplayState implements GameState {
     }
     this.game.renderer.buildMazeView(this.game.board);
     this.game.renderer.updatePlayerPosition(this.game.player.position);
+    this.game.board.revealFrom(this.game.player.position);
+    this.game.renderer.updateFog(this.game.board);
     this.game.renderer.showGameCanvas(true);
     this.game.mcpRegistry.registerGameplayTools();
     this.createHud();
+    this.updateExploredCount();
   }
 
   /** @inheritdoc */
@@ -44,6 +50,7 @@ export class GameplayState implements GameState {
     this.hud?.remove();
     this.hud = null;
     this.moveCountEl = null;
+    this.exploredCountEl = null;
   }
 
   /**
@@ -56,7 +63,17 @@ export class GameplayState implements GameState {
     }
   }
 
-  /** Creates the HUD overlay with a move counter. */
+  /**
+   * Updates the explored cell counter display.
+   */
+  updateExploredCount(): void {
+    if (this.exploredCountEl) {
+      const total = this.game.board.rows * this.game.board.cols;
+      this.exploredCountEl.textContent = `${this.game.board.revealedCount}/${total}`;
+    }
+  }
+
+  /** Creates the HUD overlay with move and explored counters. */
   private createHud(): void {
     this.hud = document.createElement("div");
     this.hud.id = "gameplay-hud";
@@ -65,8 +82,23 @@ export class GameplayState implements GameState {
     this.moveCountEl.id = "move-count";
     this.moveCountEl.textContent = "0";
 
+    this.exploredCountEl = document.createElement("span");
+    this.exploredCountEl.id = "explored-count";
+    this.exploredCountEl.textContent = "0/0";
+
     this.hud.innerHTML = `<span class="hud-label">MOVES</span> `;
     this.hud.appendChild(this.moveCountEl);
+
+    const separator = document.createElement("span");
+    separator.className = "hud-separator";
+    this.hud.appendChild(separator);
+
+    const exploredLabel = document.createElement("span");
+    exploredLabel.className = "hud-label";
+    exploredLabel.textContent = "EXPLORED";
+    this.hud.appendChild(exploredLabel);
+    this.hud.append(" ");
+    this.hud.appendChild(this.exploredCountEl);
 
     document.getElementById("app")!.appendChild(this.hud);
   }

@@ -104,4 +104,58 @@ describe("MazeBoard", () => {
     const board = new MazeBoard(8, 12);
     expect(board.exit).toEqual({ row: 7, col: 11 });
   });
+
+  describe("fog of war visibility", () => {
+    it("cells are not revealed by default", () => {
+      const board = new MazeBoard(3, 3);
+      expect(board.isRevealed({ row: 0, col: 0 })).toBe(false);
+      expect(board.isRevealed({ row: 1, col: 1 })).toBe(false);
+      expect(board.revealedCount).toBe(0);
+    });
+
+    it("revealCell marks a single cell", () => {
+      const board = new MazeBoard(3, 3);
+      board.revealCell({ row: 1, col: 2 });
+      expect(board.isRevealed({ row: 1, col: 2 })).toBe(true);
+      expect(board.isRevealed({ row: 0, col: 0 })).toBe(false);
+      expect(board.revealedCount).toBe(1);
+    });
+
+    it("revealCell is idempotent", () => {
+      const board = new MazeBoard(3, 3);
+      board.revealCell({ row: 0, col: 0 });
+      board.revealCell({ row: 0, col: 0 });
+      expect(board.revealedCount).toBe(1);
+    });
+
+    it("revealCell ignores out-of-bounds positions", () => {
+      const board = new MazeBoard(3, 3);
+      board.revealCell({ row: -1, col: 0 });
+      board.revealCell({ row: 3, col: 0 });
+      expect(board.revealedCount).toBe(0);
+    });
+
+    it("revealFrom reveals cell and neighbors through open walls", () => {
+      const board = new MazeBoard(3, 3);
+      board.removeWall({ row: 1, col: 1 }, Direction.North);
+      board.removeWall({ row: 1, col: 1 }, Direction.East);
+
+      board.revealFrom({ row: 1, col: 1 });
+
+      expect(board.isRevealed({ row: 1, col: 1 })).toBe(true);
+      expect(board.isRevealed({ row: 0, col: 1 })).toBe(true); // north
+      expect(board.isRevealed({ row: 1, col: 2 })).toBe(true); // east
+      expect(board.isRevealed({ row: 2, col: 1 })).toBe(false); // south wall
+      expect(board.isRevealed({ row: 1, col: 0 })).toBe(false); // west wall
+    });
+
+    it("revealFrom does not reveal through walls", () => {
+      const board = new MazeBoard(3, 3);
+      // All walls intact
+      board.revealFrom({ row: 1, col: 1 });
+
+      expect(board.isRevealed({ row: 1, col: 1 })).toBe(true);
+      expect(board.revealedCount).toBe(1);
+    });
+  });
 });
