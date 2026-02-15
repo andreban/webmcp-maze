@@ -6,6 +6,7 @@ import { type AudioManager } from "../audio/AudioManager.ts";
 import { type McpToolRegistry } from "../mcp/McpToolRegistry.ts";
 import { RecursiveBacktracker } from "../generation/RecursiveBacktracker.ts";
 import { MAZE_DEFAULT_ROWS, MAZE_DEFAULT_COLS } from "../types/index.ts";
+import { GameplayState } from "./states/GameplayState.ts";
 
 /**
  * Top-level game orchestrator.
@@ -33,6 +34,15 @@ export class Game {
 
   /** The currently active game state. */
   private currentState: GameState | null = null;
+
+  /**
+   * Returns the current state as a `GameplayState` if active, or `null` otherwise.
+   */
+  get gameplayState(): GameplayState | null {
+    return this.currentState instanceof GameplayState
+      ? this.currentState
+      : null;
+  }
 
   /**
    * Transitions to a new game state.
