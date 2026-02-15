@@ -146,8 +146,10 @@ the tool needs to trigger a user-visible side effect.
 - [x] Animate player movement (lerp between cells)
 - [ ] Add move history / breadcrumb trail visualization
 - [x] Add fog of war (only render visited/visible cells)
-- [ ] Add collectibles (keys, coins, power-ups) scattered through the maze
-- [ ] Add locked doors that require finding a key to pass through
+- [x] Add collectibles (colored keys, dynamite) scattered through the maze
+- [x] Add locked doors (colored) and rocks that block passages
+- [x] Add single-slot inventory with pickup, drop, and use MCP tools
+- [x] Add HUD inventory indicator
 - [ ] Add difficulty settings (maze size, mechanics complexity)
 - [ ] Add multiple levels (generate a new, harder maze after escaping)
 - [ ] Add particle effects (dust on move, glow on exit, sparkles on collectibles)

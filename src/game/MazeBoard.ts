@@ -1,5 +1,7 @@
 import {
   type Cell,
+  type Collectible,
+  type Blocker,
   Direction,
   type Position,
   DIRECTION_OFFSETS,
@@ -25,6 +27,12 @@ export class MazeBoard {
 
   /** Set of revealed cell keys (`"row,col"`) for fog of war. */
   private revealed = new Set<string>();
+
+  /** Collectibles placed on cells, keyed by `"row,col"`. */
+  private collectibles = new Map<string, Collectible>();
+
+  /** Blockers placed on passages, keyed by `"row,col:direction"`. */
+  private blockers = new Map<string, Blocker>();
 
   /**
    * Creates a new maze board with all walls intact.
@@ -101,13 +109,13 @@ export class MazeBoard {
   }
 
   /**
-   * Returns all directions from a position where there is no wall (open passages).
+   * Returns all directions from a position where there is no wall and no blocker.
    * @param pos - The cell to inspect.
    */
   openDirections(pos: Position): Direction[] {
     const cell = this.getCell(pos);
     if (!cell) return [];
-    return Object.values(Direction).filter((dir) => !cell.walls[dir]);
+    return Object.values(Direction).filter((dir) => !this.isBlocked(pos, dir));
   }
 
   /**
@@ -155,6 +163,88 @@ export class MazeBoard {
         this.revealCell(n);
       }
     }
+  }
+
+  // ─── Collectible methods ────────────────────────────────────────────
+
+  /**
+   * Places a collectible on a cell.
+   * @param collectible - The collectible to place.
+   */
+  addCollectible(collectible: Collectible): void {
+    const key = `${collectible.position.row},${collectible.position.col}`;
+    this.collectibles.set(key, collectible);
+  }
+
+  /**
+   * Returns the collectible at a position without removing it.
+   * @param pos - The cell position.
+   */
+  getCollectible(pos: Position): Collectible | undefined {
+    return this.collectibles.get(`${pos.row},${pos.col}`);
+  }
+
+  /**
+   * Removes and returns the collectible at a position.
+   * @param pos - The cell position.
+   */
+  removeCollectible(pos: Position): Collectible | undefined {
+    const key = `${pos.row},${pos.col}`;
+    const item = this.collectibles.get(key);
+    if (item) this.collectibles.delete(key);
+    return item;
+  }
+
+  /** Returns all collectibles currently on the board. */
+  getAllCollectibles(): Collectible[] {
+    return [...this.collectibles.values()];
+  }
+
+  // ─── Blocker methods ──────────────────────────────────────────────
+
+  /**
+   * Places a blocker on a passage.
+   * @param blocker - The blocker to place.
+   */
+  addBlocker(blocker: Blocker): void {
+    const key = `${blocker.position.row},${blocker.position.col}:${blocker.direction}`;
+    this.blockers.set(key, blocker);
+  }
+
+  /**
+   * Returns the blocker at a passage without removing it.
+   * @param pos - The cell position.
+   * @param dir - The direction to check.
+   */
+  getBlocker(pos: Position, dir: Direction): Blocker | undefined {
+    return this.blockers.get(`${pos.row},${pos.col}:${dir}`);
+  }
+
+  /**
+   * Removes and returns the blocker at a passage.
+   * @param pos - The cell position.
+   * @param dir - The direction of the blocker.
+   */
+  removeBlocker(pos: Position, dir: Direction): Blocker | undefined {
+    const key = `${pos.row},${pos.col}:${dir}`;
+    const blocker = this.blockers.get(key);
+    if (blocker) this.blockers.delete(key);
+    return blocker;
+  }
+
+  /** Returns all blockers currently on the board. */
+  getAllBlockers(): Blocker[] {
+    return [...this.blockers.values()];
+  }
+
+  /**
+   * Checks whether a passage is blocked by a wall or a blocker.
+   * @param pos - The cell position.
+   * @param dir - The direction to check.
+   */
+  isBlocked(pos: Position, dir: Direction): boolean {
+    if (this.hasWall(pos, dir)) return true;
+    return this.getBlocker(pos, dir) !== undefined;
   }
 
   /**

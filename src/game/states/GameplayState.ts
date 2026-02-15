@@ -1,6 +1,11 @@
 import { type GameState } from "../GameState.ts";
 import { type Game } from "../Game.ts";
 import { GameOverState } from "./GameOverState.ts";
+import {
+  collectibleDisplayName,
+  collectibleColor,
+  ItemColor,
+} from "../../types/index.ts";
 
 /**
  * The main gameplay state.
@@ -19,6 +24,9 @@ export class GameplayState implements GameState {
 
   /** Span displaying the explored cell count. */
   private exploredCountEl: HTMLSpanElement | null = null;
+
+  /** Span displaying the currently held item. */
+  private inventoryEl: HTMLSpanElement | null = null;
 
   /**
    * @param game - The game orchestrator instance.
@@ -51,6 +59,7 @@ export class GameplayState implements GameState {
     this.hud = null;
     this.moveCountEl = null;
     this.exploredCountEl = null;
+    this.inventoryEl = null;
   }
 
   /**
@@ -60,6 +69,27 @@ export class GameplayState implements GameState {
   updateMoveCount(count: number): void {
     if (this.moveCountEl) {
       this.moveCountEl.textContent = String(count);
+    }
+  }
+
+  /**
+   * Updates the inventory display in the HUD.
+   */
+  updateInventory(): void {
+    if (!this.inventoryEl) return;
+    const inv = this.game.player.inventory;
+    if (inv === null) {
+      this.inventoryEl.textContent = "\u2014"; // em dash
+      this.inventoryEl.style.color = "";
+    } else {
+      this.inventoryEl.textContent = collectibleDisplayName(inv);
+      const color = collectibleColor(inv);
+      const colorMap: Record<ItemColor, string> = {
+        [ItemColor.Red]: "#ff0044",
+        [ItemColor.Blue]: "#00aaff",
+        [ItemColor.Green]: "#00ff88",
+      };
+      this.inventoryEl.style.color = color ? colorMap[color] : "#ff6600";
     }
   }
 
@@ -99,6 +129,21 @@ export class GameplayState implements GameState {
     this.hud.appendChild(exploredLabel);
     this.hud.append(" ");
     this.hud.appendChild(this.exploredCountEl);
+
+    const separator2 = document.createElement("span");
+    separator2.className = "hud-separator";
+    this.hud.appendChild(separator2);
+
+    const holdingLabel = document.createElement("span");
+    holdingLabel.className = "hud-label";
+    holdingLabel.textContent = "HOLDING";
+    this.hud.appendChild(holdingLabel);
+    this.hud.append(" ");
+
+    this.inventoryEl = document.createElement("span");
+    this.inventoryEl.id = "inventory-item";
+    this.inventoryEl.textContent = "\u2014"; // em dash
+    this.hud.appendChild(this.inventoryEl);
 
     document.getElementById("app")!.appendChild(this.hud);
   }

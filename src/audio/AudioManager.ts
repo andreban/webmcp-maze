@@ -7,6 +7,9 @@ import { Howl } from "howler";
 export enum SoundId {
   Move = "move",
   Blocked = "blocked",
+  Pickup = "pickup",
+  Drop = "drop",
+  UseItem = "use_item",
   Win = "win",
 }
 
@@ -25,6 +28,9 @@ export class AudioManager {
   init(): void {
     this.register(SoundId.Move, "/audio/move.mp3");
     this.register(SoundId.Blocked, "/audio/blocked.mp3");
+    this.register(SoundId.Pickup, "/audio/pickup.mp3");
+    this.register(SoundId.Drop, "/audio/drop.mp3");
+    this.register(SoundId.UseItem, "/audio/use_item.mp3");
     this.register(SoundId.Win, "/audio/win.mp3");
   }
 

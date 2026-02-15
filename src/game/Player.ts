@@ -1,6 +1,9 @@
 import {
   type Position,
   type Direction,
+  type CollectibleType,
+  type BlockerType,
+  canUnlock,
   DIRECTION_OFFSETS,
 } from "../types/index.ts";
 import { type MazeBoard } from "./MazeBoard.ts";
@@ -16,6 +19,9 @@ export class Player {
   /** Total number of moves the player has made. */
   moveCount: number;
 
+  /** The item currently held by the player, or `null` if empty-handed. */
+  inventory: CollectibleType | null;
+
   /**
    * Creates a new player at the given starting position.
    * @param start - The initial row/col coordinate (defaults to top-left).
@@ -23,18 +29,19 @@ export class Player {
   constructor(start: Position = { row: 0, col: 0 }) {
     this.position = { ...start };
     this.moveCount = 0;
+    this.inventory = null;
   }
 
   /**
    * Attempts to move the player in the given direction.
-   * The move is rejected if a wall blocks the way.
+   * The move is rejected if a wall or blocker blocks the way.
    *
    * @param dir - The direction to move.
-   * @param board - The maze board used to check walls and bounds.
+   * @param board - The maze board used to check walls, blockers, and bounds.
    * @returns `true` if the move succeeded, `false` if blocked.
    */
   move(dir: Direction, board: MazeBoard): boolean {
-    if (board.hasWall(this.position, dir)) {
+    if (board.isBlocked(this.position, dir)) {
       return false;
     }
 
@@ -60,5 +67,39 @@ export class Player {
   reset(start: Position = { row: 0, col: 0 }): void {
     this.position = { ...start };
     this.moveCount = 0;
+    this.inventory = null;
+  }
+
+  /**
+   * Picks up an item if the inventory is empty.
+   * @param item - The collectible type to pick up.
+   * @returns `true` if successful, `false` if inventory is full.
+   */
+  pickup(item: CollectibleType): boolean {
+    if (this.inventory !== null) return false;
+    this.inventory = item;
+    return true;
+  }
+
+  /**
+   * Drops the currently held item.
+   * @returns The dropped item type, or `null` if inventory was empty.
+   */
+  drop(): CollectibleType | null {
+    const item = this.inventory;
+    this.inventory = null;
+    return item;
+  }
+
+  /**
+   * Uses the held item on a blocker if compatible. Consumes the item on success.
+   * @param blockerType - The blocker type to attempt to clear.
+   * @returns `true` if the item was used successfully, `false` otherwise.
+   */
+  useItem(blockerType: BlockerType): boolean {
+    if (this.inventory === null) return false;
+    if (!canUnlock(this.inventory, blockerType)) return false;
+    this.inventory = null;
+    return true;
   }
 }

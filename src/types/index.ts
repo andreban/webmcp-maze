@@ -57,3 +57,110 @@ export const OPPOSITE_DIRECTION: Record<Direction, Direction> = {
   [Direction.East]: Direction.West,
   [Direction.West]: Direction.East,
 };
+
+/** Types of collectible items the player can pick up. */
+export enum CollectibleType {
+  KeyRed = "key_red",
+  KeyBlue = "key_blue",
+  KeyGreen = "key_green",
+  Dynamite = "dynamite",
+}
+
+/** Types of blockers that obstruct passages between cells. */
+export enum BlockerType {
+  DoorRed = "door_red",
+  DoorBlue = "door_blue",
+  DoorGreen = "door_green",
+  Rock = "rock",
+}
+
+/** Colors shared by keys and their matching doors. */
+export enum ItemColor {
+  Red = "red",
+  Blue = "blue",
+  Green = "green",
+}
+
+/** A collectible item placed on a cell. */
+export interface Collectible {
+  type: CollectibleType;
+  position: Position;
+}
+
+/** A blocker placed on a passage between two cells. */
+export interface Blocker {
+  type: BlockerType;
+  /** The cell position where the blocker is registered. */
+  position: Position;
+  /** The direction from the position where the blocker blocks passage. */
+  direction: Direction;
+}
+
+/** Returns the color of a collectible, or `null` for dynamite. */
+export function collectibleColor(type: CollectibleType): ItemColor | null {
+  switch (type) {
+    case CollectibleType.KeyRed:
+      return ItemColor.Red;
+    case CollectibleType.KeyBlue:
+      return ItemColor.Blue;
+    case CollectibleType.KeyGreen:
+      return ItemColor.Green;
+    case CollectibleType.Dynamite:
+      return null;
+  }
+}
+
+/** Returns the color of a blocker, or `null` for rock. */
+export function blockerColor(type: BlockerType): ItemColor | null {
+  switch (type) {
+    case BlockerType.DoorRed:
+      return ItemColor.Red;
+    case BlockerType.DoorBlue:
+      return ItemColor.Blue;
+    case BlockerType.DoorGreen:
+      return ItemColor.Green;
+    case BlockerType.Rock:
+      return null;
+  }
+}
+
+/** Checks whether a collectible can unlock/clear a blocker. */
+export function canUnlock(
+  item: CollectibleType,
+  blocker: BlockerType,
+): boolean {
+  if (item === CollectibleType.Dynamite && blocker === BlockerType.Rock) {
+    return true;
+  }
+  const itemCol = collectibleColor(item);
+  const blockerCol = blockerColor(blocker);
+  return itemCol !== null && blockerCol !== null && itemCol === blockerCol;
+}
+
+/** Human-readable display name for a collectible type. */
+export function collectibleDisplayName(type: CollectibleType): string {
+  switch (type) {
+    case CollectibleType.KeyRed:
+      return "RED KEY";
+    case CollectibleType.KeyBlue:
+      return "BLUE KEY";
+    case CollectibleType.KeyGreen:
+      return "GREEN KEY";
+    case CollectibleType.Dynamite:
+      return "DYNAMITE";
+  }
+}
+
+/** Human-readable display name for a blocker type. */
+export function blockerDisplayName(type: BlockerType): string {
+  switch (type) {
+    case BlockerType.DoorRed:
+      return "red door";
+    case BlockerType.DoorBlue:
+      return "blue door";
+    case BlockerType.DoorGreen:
+      return "green door";
+    case BlockerType.Rock:
+      return "rock";
+  }
+}

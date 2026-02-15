@@ -1,5 +1,7 @@
 import { Application } from "pixi.js";
 import { MazeView } from "./MazeView.ts";
+import { BlockersView } from "./BlockersView.ts";
+import { CollectiblesView } from "./CollectiblesView.ts";
 import { FogOverlay } from "./FogOverlay.ts";
 import { PlayerView } from "./PlayerView.ts";
 import { type MazeBoard } from "../game/MazeBoard.ts";
@@ -16,6 +18,12 @@ export class Renderer {
   /** View that draws the maze walls and exit. */
   private mazeView: MazeView;
 
+  /** View that draws blockers (doors and rocks) on passages. */
+  private blockersView: BlockersView;
+
+  /** View that draws collectibles (keys and dynamite) on cells. */
+  private collectiblesView: CollectiblesView;
+
   /** Overlay that draws fog of war over unrevealed cells. */
   private fogOverlay: FogOverlay;
 
@@ -25,6 +33,8 @@ export class Renderer {
   constructor() {
     this.app = new Application();
     this.mazeView = new MazeView();
+    this.blockersView = new BlockersView();
+    this.collectiblesView = new CollectiblesView();
     this.fogOverlay = new FogOverlay();
     this.playerView = new PlayerView();
   }
@@ -42,24 +52,31 @@ export class Renderer {
     });
     container.appendChild(this.app.canvas);
 
+    // Layer order: maze → blockers → collectibles → fog → player
     this.app.stage.addChild(this.mazeView.container);
+    this.app.stage.addChild(this.blockersView.container);
+    this.app.stage.addChild(this.collectiblesView.container);
     this.app.stage.addChild(this.fogOverlay.container);
     this.app.stage.addChild(this.playerView.container);
 
-    // Drive PlayerView animation each frame
+    // Drive animations each frame
     this.app.ticker.add((ticker) => {
-      this.playerView.tick(ticker.deltaMS / 1000);
+      const dt = ticker.deltaMS / 1000;
+      this.playerView.tick(dt);
+      this.collectiblesView.tick(dt);
     });
 
     this.showGameCanvas(false);
   }
 
   /**
-   * Rebuilds the maze view from a new board and centers the camera.
+   * Rebuilds all maze views from a new board and centers the camera.
    * @param board - The maze board to visualize.
    */
   buildMazeView(board: MazeBoard): void {
     this.mazeView.build(board);
+    this.blockersView.build(board);
+    this.collectiblesView.build(board);
     this.centerCamera(board);
   }
 
@@ -69,6 +86,22 @@ export class Renderer {
    */
   updateFog(board: MazeBoard): void {
     this.fogOverlay.update(board);
+  }
+
+  /**
+   * Redraws the collectibles view after items are picked up or dropped.
+   * @param board - The maze board with collectible data.
+   */
+  updateCollectibles(board: MazeBoard): void {
+    this.collectiblesView.update(board);
+  }
+
+  /**
+   * Redraws the blockers view after a blocker is cleared.
+   * @param board - The maze board with blocker data.
+   */
+  updateBlockers(board: MazeBoard): void {
+    this.blockersView.update(board);
   }
 
   /**

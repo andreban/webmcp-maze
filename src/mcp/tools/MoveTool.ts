@@ -1,5 +1,5 @@
 import { type Game } from "../../game/Game.ts";
-import { Direction } from "../../types/index.ts";
+import { Direction, blockerDisplayName } from "../../types/index.ts";
 import { SoundId } from "../../audio/AudioManager.ts";
 
 /** Valid direction strings accepted by the move tool input. */
@@ -58,6 +58,20 @@ export function createMoveTool(game: Game): ModelContextTool {
           },
           atExit,
           moveCount: game.player.moveCount,
+        });
+      }
+
+      // Check if blocked by a blocker (not a wall)
+      const blocker = game.board.getBlocker(
+        game.player.position,
+        dir as Direction,
+      );
+      if (blocker) {
+        game.audio.play(SoundId.Blocked);
+        return JSON.stringify({
+          success: false,
+          reason: `A ${blockerDisplayName(blocker.type)} blocks the ${dir} direction. Use an item to clear it.`,
+          blocker: blocker.type,
         });
       }
 

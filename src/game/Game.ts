@@ -5,6 +5,7 @@ import { type Renderer } from "../rendering/Renderer.ts";
 import { type AudioManager } from "../audio/AudioManager.ts";
 import { type McpToolRegistry } from "../mcp/McpToolRegistry.ts";
 import { RecursiveBacktracker } from "../generation/RecursiveBacktracker.ts";
+import { ItemPlacer } from "../generation/ItemPlacer.ts";
 import { MAZE_DEFAULT_ROWS, MAZE_DEFAULT_COLS } from "../types/index.ts";
 import { GameplayState } from "./states/GameplayState.ts";
 
@@ -67,6 +68,7 @@ export class Game {
     this.board = new MazeBoard(rows, cols);
     const generator = new RecursiveBacktracker();
     generator.generate(this.board);
+    new ItemPlacer().place(this.board);
 
     this.player = new Player({ row: 0, col: 0 });
     this.won = false;

@@ -1,6 +1,9 @@
 import { type Game } from "../game/Game.ts";
 import { createMoveTool } from "./tools/MoveTool.ts";
 import { createLookTool } from "./tools/LookTool.ts";
+import { createPickupTool } from "./tools/PickupTool.ts";
+import { createDropTool } from "./tools/DropTool.ts";
+import { createUseTool } from "./tools/UseTool.ts";
 import { createStartGameTool } from "./tools/StartGameTool.ts";
 
 /**
@@ -42,10 +45,16 @@ export class McpToolRegistry {
 
   /**
    * Registers tools available during gameplay.
-   * Exposes `move` and `look` tools for maze navigation.
+   * Exposes movement, inspection, and item interaction tools.
    */
   registerGameplayTools(): void {
-    this.provideTools([createMoveTool(this.game), createLookTool(this.game)]);
+    this.provideTools([
+      createMoveTool(this.game),
+      createLookTool(this.game),
+      createPickupTool(this.game),
+      createDropTool(this.game),
+      createUseTool(this.game),
+    ]);
   }
 
   /**
