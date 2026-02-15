@@ -87,8 +87,11 @@ export function createUseTool(game: Game): ModelContextTool {
       }
 
       game.renderer.updateBlockers(game.board);
+      game.board.revealFrom(pos);
+      game.renderer.updateFog(game.board);
       game.audio.play(SoundId.UseItem);
       game.gameplayState?.updateInventory();
+      game.gameplayState?.updateExploredCount();
 
       return JSON.stringify({
         success: true,
